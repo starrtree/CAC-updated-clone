@@ -1,0 +1,102 @@
+/* Final hero + title interaction polish */
+
+:root {
+  --cac-red: #AF0404;
+  --cac-blue: #283080;
+}
+
+/* Remove the second hero card so the opening feels cleaner and more premium. */
+body .site-shell .hero .hero-panel {
+  display: none !important;
+}
+
+/* Make the main hero smaller and more composed on desktop. */
+@media (min-width: 1000px) {
+  body .site-shell .hero {
+    display: block !important;
+    min-height: 0 !important;
+    padding-top: clamp(50px, 4vw, 76px) !important;
+    padding-bottom: clamp(50px, 4vw, 76px) !important;
+  }
+
+  body .site-shell .hero .hero-copy {
+    width: min(100%, 1040px) !important;
+    max-width: 1040px !important;
+    min-height: 0 !important;
+    margin: 0 auto !important;
+    padding: clamp(30px, 3.2vw, 48px) clamp(36px, 4vw, 60px) !important;
+    border-radius: 28px !important;
+  }
+
+  body .site-shell .hero .hero-copy h1 {
+    width: 100% !important;
+    max-width: 860px !important;
+    margin: 20px auto 16px !important;
+    font-size: clamp(3.2rem, 5vw, 5.35rem) !important;
+    line-height: .94 !important;
+    letter-spacing: -.018em !important;
+    text-align: center !important;
+    text-wrap: balance !important;
+  }
+
+  body .site-shell .hero .hero-copy .eyebrow,
+  body .site-shell .hero .hero-lead,
+  body .site-shell .hero .hero-actions,
+  body .site-shell .hero .hero-stats {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  body .site-shell .hero .hero-lead {
+    max-width: 700px !important;
+    text-align: center !important;
+  }
+}
+
+/* Accent words are neutral at rest. They only take on brand color on hover. */
+body .site-shell .title-accent {
+  color: inherit !important;
+  transition: color .24s ease, text-shadow .24s ease !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body .site-shell .hero-copy:hover h1 .title-accent-blue,
+  body .site-shell .section-heading:hover h2 .title-accent-blue,
+  body .site-shell .client-section .section-heading:hover h2 .title-accent-blue,
+  body .site-shell #story .story-intro:hover h2 .title-accent-blue,
+  body .site-shell #careers:hover h2 .title-accent-blue,
+  body .site-shell #contact .contact-card:hover h2 .title-accent-blue {
+    color: var(--cac-blue) !important;
+  }
+
+  body .site-shell .hero-copy:hover h1 .title-accent-red,
+  body .site-shell .section-heading:hover h2 .title-accent-red,
+  body .site-shell .client-section .section-heading:hover h2 .title-accent-red,
+  body .site-shell #story .story-intro:hover h2 .title-accent-red,
+  body .site-shell #careers:hover h2 .title-accent-red,
+  body .site-shell #contact .contact-card:hover h2 .title-accent-red {
+    color: var(--cac-red) !important;
+  }
+
+  body .site-shell .section-heading:hover h2 .title-accent-sage,
+  body .site-shell .section-heading:hover h2 .title-accent-teal {
+    color: var(--cac-blue) !important;
+  }
+}
+
+/* Keep the lifecycle list concise: Design, Permit, Install, Service, Retrofit. */
+body .site-shell #capabilities .process-rail span:nth-child(2),
+body .site-shell #capabilities .process-rail span:nth-child(5),
+body .site-shell #capabilities .process-rail span:nth-child(7) {
+  display: none !important;
+}
+
+body .site-shell #capabilities .process-rail {
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+}
+
+@media (max-width: 760px) {
+  body .site-shell #capabilities .process-rail {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
