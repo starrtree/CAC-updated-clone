@@ -3,6 +3,7 @@
 :root {
   --cac-red: #AF0404;
   --cac-blue: #283080;
+  --cac-teal: #55C1CF;
 }
 
 /* Remove the second hero card so the opening feels cleaner and more premium. */
@@ -54,8 +55,15 @@ body .site-shell .hero .hero-panel {
 }
 
 /* Accent words are neutral at rest. They only take on brand color on hover. */
-body .site-shell .title-accent {
+body .site-shell .title-accent,
+body .site-shell .hero h1 .title-accent,
+body .site-shell .glass-panel-dark .title-accent,
+body .site-shell .delivery-section .title-accent,
+body .site-shell .markets .title-accent,
+body .site-shell .service-area .title-accent,
+body .site-shell .careers .title-accent {
   color: inherit !important;
+  text-shadow: inherit !important;
   transition: color .24s ease, text-shadow .24s ease !important;
 }
 
@@ -78,9 +86,12 @@ body .site-shell .title-accent {
     color: var(--cac-red) !important;
   }
 
-  body .site-shell .section-heading:hover h2 .title-accent-sage,
-  body .site-shell .section-heading:hover h2 .title-accent-teal {
+  body .site-shell .section-heading:hover h2 .title-accent-sage {
     color: var(--cac-blue) !important;
+  }
+
+  body .site-shell .sure-group:hover h2 .title-accent-teal {
+    color: var(--cac-teal) !important;
   }
 }
 
