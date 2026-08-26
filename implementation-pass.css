@@ -25,13 +25,15 @@ body.has-scrolled .nav .brand img { max-height: 46px !important; }
 
 /* Exact three-stage lifecycle */
 body .site-shell #capabilities .process-rail {
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  display: flex !important;
+  grid-template-columns: none !important;
   width: 100% !important;
 }
 
 body .site-shell #capabilities .process-rail span {
-  width: 100% !important;
+  flex: 1 1 33.333333% !important;
+  width: 33.333333% !important;
+  max-width: 33.333333% !important;
   min-width: 0 !important;
   border-right: 1px solid rgba(40,48,128,.15) !important;
 }
