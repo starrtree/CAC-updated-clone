@@ -4,7 +4,8 @@
   'latest-fixes.css',
   'final-adjustments.css',
   'site-polish-fixes.css',
-  'interactive-sections.css'
+  'interactive-sections.css',
+  'implementation-pass.css'
 ].forEach((href) => {
   const link = document.createElement('link');
   link.rel = 'stylesheet';
@@ -167,11 +168,26 @@ const setupDeliveryAccordions = () => {
     card.classList.add('delivery-collapsible');
     card.dataset.accordionReady = 'true';
 
-    toggleButton.addEventListener('click', () => {
-      const willOpen = !card.classList.contains('is-expanded');
+    const setOpen = (willOpen) => {
+      document.querySelectorAll('.delivery-card.is-expanded').forEach((openCard) => {
+        if (openCard === card) return;
+        openCard.classList.remove('is-expanded');
+        const openButton = openCard.querySelector('.delivery-toggle');
+        openButton?.setAttribute('aria-expanded', 'false');
+      });
       card.classList.toggle('is-expanded', willOpen);
       toggleButton.setAttribute('aria-expanded', String(willOpen));
       toggleButton.setAttribute('aria-label', `${willOpen ? 'Collapse' : 'Expand'} ${heading.textContent.trim()} details`);
+    };
+
+    toggleButton.addEventListener('click', (event) => {
+      event.stopPropagation();
+      setOpen(!card.classList.contains('is-expanded'));
+    });
+
+    card.addEventListener('click', (event) => {
+      if (event.target.closest('a, button')) return;
+      setOpen(!card.classList.contains('is-expanded'));
     });
   });
 };
@@ -181,7 +197,7 @@ const setupProjectExpansion = () => {
   if (!grid || grid.dataset.expansionReady === 'true') return;
 
   const cards = Array.from(grid.querySelectorAll('.project-card'));
-  const desktopVisibleCount = 5;
+  const desktopVisibleCount = 4;
   if (cards.length <= desktopVisibleCount) return;
 
   cards.slice(desktopVisibleCount).forEach((card) => card.classList.add('project-extra'));
@@ -270,13 +286,12 @@ const setupConciseContent = () => {
   setText('.hero-lead', 'Commercial HVAC and mechanical systems from engineering through service.');
 
   const trustItems = document.querySelectorAll('.trust-band p');
-  if (trustItems[0]) trustItems[0].textContent = 'Design-Build + Plan & Spec';
-  if (trustItems[1]) trustItems[1].textContent = 'Service + Maintenance';
-  if (trustItems[2]) trustItems[2].textContent = 'Established 1938';
+  if (trustItems[0]) trustItems[0].textContent = 'Cincinnati’s original design-build HVAC contractor';
+  if (trustItems[1]) trustItems[1].textContent = 'Commercial + industrial mechanical systems';
+  if (trustItems[2]) trustItems[2].textContent = 'Part of the SURE Group family';
 
   setText('#capabilities .section-heading h2', 'One mechanical partner. Every phase.');
   setText('#capabilities .section-heading p:not(.eyebrow)', 'One accountable team from concept through lifecycle support.');
-  setText('.delivery-section .section-heading h2', 'Design-Build or Plan & Spec.');
   setText('#services .section-heading h2', 'Commercial mechanical expertise.');
   setText('#services .section-heading p:not(.eyebrow)', 'HVAC, controls, piping, service, and specialty environments.');
   setText('#markets .section-heading h2', 'Versatile across critical environments.');
@@ -294,9 +309,35 @@ const setupLifecycleStages = () => {
   const rail = document.querySelector('#capabilities .process-rail');
   if (!rail) return;
 
-  const keep = new Set(['Design', 'Permit', 'Install', 'Service', 'Retrofit']);
+  const keep = new Set(['Design', 'Install', 'Service']);
   Array.from(rail.querySelectorAll('span')).forEach((item) => {
     if (!keep.has(item.textContent.trim())) item.remove();
+  });
+};
+
+const setupStickyHeader = () => {
+  const topbar = document.querySelector('.topbar');
+  const measure = () => document.documentElement.style.setProperty('--topbar-height', `${topbar?.offsetHeight || 34}px`);
+  const update = () => document.body.classList.toggle('has-scrolled', window.scrollY > 48);
+  measure();
+  update();
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', measure);
+};
+
+const setupStoryReveal = () => {
+  const paragraphs = document.querySelectorAll('#story .story-copy p');
+  if (!('IntersectionObserver' in window)) {
+    paragraphs.forEach((paragraph) => paragraph.classList.add('is-story-visible'));
+    return;
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => entry.target.classList.toggle('is-story-visible', entry.isIntersecting));
+  }, { threshold: .18, rootMargin: '0px 0px -8% 0px' });
+  paragraphs.forEach((paragraph, index) => {
+    paragraph.classList.add('story-reveal-line');
+    paragraph.style.setProperty('--story-delay', `${Math.min(index % 3, 2) * 55}ms`);
+    observer.observe(paragraph);
   });
 };
 
@@ -465,6 +506,8 @@ setupRevealAnimations();
 setupTilt();
 setupScrollProgress();
 setupContactForm();
+setupStickyHeader();
+setupStoryReveal();
 
 const year = document.getElementById('year');
 if (year) year.textContent = new Date().getFullYear();
